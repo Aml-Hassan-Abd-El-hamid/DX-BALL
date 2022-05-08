@@ -107,6 +107,45 @@ void enableTimer(void){
 		TIMER2_CTL_R = 0x00000001;    //  enable timer2A
 }
 
+void Timer2A_Handler(void){ 
+	int i,j;
+	TIMER2_ICR_R = 0x00000001;   // acknowledge timer2A timeout
+  	TimerCount++; 
+ 	Bomb_move();  
+  	if(lifes>0){ // check if the player still have lifes to continue the game
+		if(lifes!= life){
+			start_game(); 
+			life = lifes; // update the value of life
+			Delay100ms(20);
+    			}
+	//read both switches, the right and the left.
+	left  = GPIO_PORTF_DATA_R&0x10; // read PF4 into left switch
+	right = GPIO_PORTF_DATA_R&0x01; // read PF0 into right switch
+		
+	if(!left && !right) GPIO_PORTF_DATA_R = 0x02; //if both switches are presed, led is red and the bunker can't move
+	else{
+		if(!left && right){  // if the left switch is pressed, move the bunker one step to the left
+			GPIO_PORTF_DATA_R = 0x04; //if the left switch is pressed, led is blue
+			if(bunker_x >= 1){ //check if the bunker is not at the end of the screen from the left
+				set_screen(bunker_y, bunker_x+4 ,0); //update the prev position state with 0 
+				set_screen(bunker_y ,bunker_x-1 ,2); //update the new position state with 2 
+				bunker_x--; //update bunker's x coordinate value after the displacement	
+				}
+			}
+		else if(!right && left){ // if the right switch is pressed, move the bunker one step to the right
+			GPIO_PORTF_DATA_R = 0x08; //if right switch is pressed, led is green
+			if(bunker_x <= 15) { //check if the bunker is not at the end of the screen from right
+       				set_screen(bunker_y, bunker_x, 0); //update the prev position state with 0 
+				set_screen(bunker_y, bunker_x+5, 2); //update the new position state with 2 
+				bunker_x++; //update bunker's x coordinate value after the displacement
+				}
+			}
+		else GPIO_PORTF_DATA_R = 0x00; //if no switches are pressed, do nothing
+		}
+		draw();  //call draw function to draw the screen after each change
+	}	
+  Semaphore = 1; // trigger
+}
 
 void Delay100ms(unsigned long count){
 	unsigned long volatile time;
