@@ -183,6 +183,57 @@ void level_init(){
 	level = 1;
     life=1;
 }
+void Bomb_move(){
+    int Bomb_state;
+    if(direction ==0){
+        Bomb_state= check_bomb_state(y-1,x-1);
+        switch_state(Bomb_state);
+        if(Bomb_state==0){
+            y--;
+            x--;
+        }     
+    }
+    else if(direction==1){
+        Bomb_state= check_bomb_state(y-1,x);
+			switch_state(Bomb_state);
+			if(Bomb_state == 0)
+                y--; 
+    }
+    
+    else if(direction==2){
+        Bomb_state= check_bomb_state(y-1,x+1);
+			switch_state(Bomb_state);
+			if(Bomb_state == 0){
+                y--; 
+                x++;}
+    }
+    
+    else if(direction==3){
+            Bomb_state= check_bomb_state(y+1,x-1);
+			switch_state(Bomb_state);
+			if(Bomb_state == 0){
+                y++; 
+                x--;
+                }
+    }
+    
+    else if(direction==4){
+            Bomb_state= check_bomb_state(y+1,x);
+			switch_state(Bomb_state);
+			if(Bomb_state == 0){
+                y++; 
+                }
+    }
+    
+    else if(direction==5){
+            Bomb_state= check_bomb_state(y+1,x+1);
+			switch_state(Bomb_state);
+			if(Bomb_state == 0){
+                y++; 
+                x++;
+                }
+    }
+}
 
 void set_screen(int i,int j,int state){
     state_screen[i][j]=state; 
