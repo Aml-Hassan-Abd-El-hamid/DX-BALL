@@ -238,9 +238,15 @@ void Bomb_move(){
 
 void Bomb_change_dir(int state){
 	
-	if(state == 1) // the ball hits the cell
-{
+	if(state == 1) { // the ball hits the cell
+		if(direction <= 2) 
+                   direction = rand()%3 + 3; //move the ball down (the modulas of any number is 0/1/2 if we add 3 to any result will change the direction of ball to down)
+	
+	         else direction = rand()%3;  // move the ball up (the direction is down and result , 0/1/2, will we change the direction of ball to up) 
 	}
+	
+	
+	
 	
 }
 
