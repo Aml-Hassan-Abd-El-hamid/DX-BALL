@@ -235,6 +235,15 @@ void Bomb_move(){
     }
 }
 
+
+void Bomb_change_dir(int state){
+	
+	if(state == 1) // the ball hits the cell
+{
+	}
+	
+}
+
 void set_screen(int i,int j,int state){
     state_screen[i][j]=state; 
 }
