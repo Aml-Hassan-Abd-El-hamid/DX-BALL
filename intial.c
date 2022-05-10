@@ -246,7 +246,7 @@ void Bomb_change_dir(int state){
 	}
 	
 	if(state == 2) direction = rand()%3; // move the ball up (at state =2 the ball on the bunker need to change its direction to up *d= 0/1/2*)
-	
+	if(state == 4) direction = rand()%3 + 3; // move the ball down.(at state =4 the ball on the top of screen need to change its direction to down *d= 3/4/5*) 
 	
 }
 
