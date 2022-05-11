@@ -183,52 +183,54 @@ void level_init(){
 	level = 1;
     life=1;
 }
+
+
 void Bomb_move(){
-    int Bomb_state;
-    if(direction ==0){
-        Bomb_state= check_bomb_state(y-1,x-1);
-        switch_state(Bomb_state);
-        if(Bomb_state==0){
+    int Bomb_state;       // holds the current state of the bomb
+    if(direction ==0){    // if the direction of the bomb is north west 
+        Bomb_state= check_bomb_state(y-1,x-1); // check its state
+        switch_state(Bomb_state); // change its state
+        if(Bomb_state==0){  // if the next cell is empty it will keep moving into its way
             y--;
             x--;
         }     
     }
-    else if(direction==1){
-        Bomb_state= check_bomb_state(y-1,x);
-			switch_state(Bomb_state);
-			if(Bomb_state == 0)
+    else if(direction==1){   // if the direction of the bomb is north 
+        Bomb_state= check_bomb_state(y-1,x); // check its state
+			switch_state(Bomb_state); // change its state
+			if(Bomb_state == 0)       // if the next cell is empty it will keep moving into its way
                 y--; 
     }
     
-    else if(direction==2){
-        Bomb_state= check_bomb_state(y-1,x+1);
-			switch_state(Bomb_state);
-			if(Bomb_state == 0){
+    else if(direction==2){  // if the direction of the bomb is north east
+        Bomb_state= check_bomb_state(y-1,x+1); // check its state
+			switch_state(Bomb_state); // change its state
+			if(Bomb_state == 0){      // if the next cell is empty it will keep moving into its way
                 y--; 
                 x++;}
     }
     
-    else if(direction==3){
-            Bomb_state= check_bomb_state(y+1,x-1);
-			switch_state(Bomb_state);
-			if(Bomb_state == 0){
+    else if(direction==3){  // if the direction of the bomb is south west
+            Bomb_state= check_bomb_state(y+1,x-1); // check its state
+			switch_state(Bomb_state); // change its state
+			if(Bomb_state == 0){      // if the next cell is empty it will keep moving into its way
                 y++; 
                 x--;
                 }
     }
     
-    else if(direction==4){
-            Bomb_state= check_bomb_state(y+1,x);
-			switch_state(Bomb_state);
-			if(Bomb_state == 0){
+    else if(direction==4){  // if the direction of the bomb is south
+            Bomb_state= check_bomb_state(y+1,x); // check its state
+			switch_state(Bomb_state); // change its state
+			if(Bomb_state == 0){      // if the next cell is empty it will keep moving into its way
                 y++; 
                 }
     }
     
-    else if(direction==5){
-            Bomb_state= check_bomb_state(y+1,x+1);
-			switch_state(Bomb_state);
-			if(Bomb_state == 0){
+    else if(direction==5){  // if the direction of the bomb is south east
+            Bomb_state= check_bomb_state(y+1,x+1); // check its state
+			switch_state(Bomb_state); // change its state
+			if(Bomb_state == 0){      // if the next cell is empty it will keep moving into its way
                 y++; 
                 x++;
                 }
