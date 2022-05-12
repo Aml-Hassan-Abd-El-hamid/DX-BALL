@@ -259,6 +259,26 @@ void Bomb_change_dir(int state){
 	
 }
 
+void delete_ball(){
+    if( check_bomb_state(x-1, y) == 1 ){
+		state_screen[y][x-1] = 0;
+		 increase_score();
+	}	
+	if( check_bomb_state(x+1,y) == 1){
+		state_screen[y][x+1]=0;
+		increase_score();
+	}
+	
+	if( check_bomb_state(x,y+1) == 1){
+		state_screen[y+1][x] = 0;
+		increase_score();
+	}
+	
+	if( check_bomb_state(x,y-1) == 1){
+		state_screen[y-1][x]=0;
+		increase_score();}		
+}
+
 void set_screen(int i,int j,int state){
     state_screen[i][j]=state; 
 }
