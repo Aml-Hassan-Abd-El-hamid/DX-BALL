@@ -21,7 +21,7 @@ int main(void){
 	level_init(); //set score to 0       
 	start_game();					
 	start_screen(); 
-	Delay100ms(10);   // delay = 0.1 sec * 30 = 3 sec.
+	Delay100ms(10);   // delay = 0.1 sec * 10 = 1 sec.
 	level_screen(1);  //initalize the level 
 	draw();//draw the balls, the bomb, and the bunker						
 	life = GetLifes();
