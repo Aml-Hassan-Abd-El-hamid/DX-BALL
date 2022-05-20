@@ -3,13 +3,14 @@
 #include "Random.h"
 #include "TExaS.h"
 #include "intial.h"
-
+#include "port_f.h"
+#include "timer_2.h"
 void DisableInterrupts(void);
 void EnableInterrupts(void);
 void Timer2_Init(unsigned long period);
 void Delay100ms(unsigned long count);
-
 void level_screen(int level);
+
 
 int main(void){
 
