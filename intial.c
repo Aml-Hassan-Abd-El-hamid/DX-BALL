@@ -258,7 +258,37 @@ void Bomb_change_dir(int state){
 	if(state == 4) direction = rand()%3 + 3;  // move the ball down.(at state =4 the ball on the top of screen need to change its direction to down *d= 3/4/5*) 
 	
 }
+void increase_score(){ 
+	score += 30;
+}
 
+int check_bomb_state(int y,int x){
+	// check if bomb moved down the bunker -> game over.
+	if(y >= GRID_HIGHT) { return -1; }
+	
+	// check if bomb hits the top border of screen.
+	if(y <= 0)   	 { return 4;  }
+
+	// The next cell is out of the screen borders.
+	if(x >=  GRID_WIDTH  || x < 0 ) { return 3; }  
+	
+	// check if the next state is an empty cell.
+	if(state_screen[y][x] == 0) { return 0; } 
+	
+	// The cell is exist in the above cells to be shoted, take its score and make the cell empty.
+	// the prev state was 1, the future state will be 0.
+	if(state_screen[y][x] == 1){
+		state_screen [y][x] = 0; 
+		increase_score(); 
+		return 1;
+	}
+	
+	// check if bomb hits the bunker.
+	if(state_screen[y][x] == 2) { return 2; }
+	
+	// if non of the prev cases happened.
+	return -1;
+}
 void delete_ball(){
     if( check_bomb_state(x-1, y) == 1 ){
 		state_screen[y][x-1] = 0;
