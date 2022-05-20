@@ -14,16 +14,16 @@ void level_screen(int level);
 int main(void){
 
 	TExaS_Init(NoLCD_NoScope); // set system clock to 80 MHz.
-	Nokia5110_Init();					 // initialize lcd nokia 5110.
-	PortF_Init();							 // portF initialization.
+	Nokia5110_Init(); // initialize lcd nokia 5110.
+	PortF_Init();// portF initialization.
 	Timer2_Init(800000000/30); // 30 Hz. "controls the speed of the game."
 	//--------------------------------------------------------------------------------------
-	level_init();       
+	level_init(); //set score to 0       
 	start_game();					
 	start_screen(); 
 	Delay100ms(10);   // delay = 0.1 sec * 30 = 3 sec.
-	level_screen(1);  
-	draw();						
+	level_screen(1);  //initalize the level 
+	draw();//draw the balls, the bomb, and the bunker						
 	life = GetLifes();
 	
 	while(GetLifes() > 0){
