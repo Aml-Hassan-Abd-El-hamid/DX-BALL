@@ -1,20 +1,17 @@
-
 #define BUNKERW ((unsigned char) Bunker[18])
 #define BUNKERH ((unsigned char) Bunker[22])
 #define Ball_Width ((unsigned char) Balls[18])
 #define Ball_Hight ((unsigned char) Balls[22])
+
 static int x;
 static int y;
 static int direction;
 static int score;
 static int level;
-//static int life;
 static int lifes = 1;
 static const int GRID_WIDTH =21;
 static const int GRID_HIGHT =12;
-//main people
-static unsigned long TimerCount;
-static unsigned long Semaphore;
+
 
 //unsigned long shoot;
 static unsigned int bunker_x;
@@ -50,29 +47,30 @@ static const unsigned char Bomb[] ={
 0x00, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0xFF, 0x00, 0x00, 0x00, 0xFF, 0x00, 0xFF, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0xFF, 0xFF, 0xFF, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0xFF, 0xFF,
 0x00, 0x00, 0xFF, 0xFF, 0x00, 0x00, 0xFF,};
 
+void Timer2A_Handler(void);
+
 //main
 void start_screen ();
 void start_game();
 void draw();
 void win_screen();
 void loss_screen();
-void Timer2_Init(unsigned long period);
-void disableTimer();
-void enableTimer(void);
-void Timer2A_Handler(void);
-void Delay100ms(unsigned long count);
-void PortF_Init(void);
-////
+
+
+
 void Bomb_init();
 void level_init();
 void Bomb_move();
 void Bomb_change_dir(int state);
+
 void increase_score();
 int check_bomb_state(int,int);
 void delete_ball();
 void switch_state(int state);
+
 void set_screen(int i,int j,int state);
 void set_level(int L);
+
 int get_screen(int,int);
 int GetLifes();
 int GetLevel();
