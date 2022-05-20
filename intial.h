@@ -8,7 +8,7 @@ static int y;
 static int direction;
 static int score;
 static int level;
-static int life;
+//static int life;
 static int lifes = 1;
 static const int GRID_WIDTH =21;
 static const int GRID_HIGHT =12;
@@ -20,6 +20,8 @@ static unsigned long Semaphore;
 static unsigned int bunker_x;
 static unsigned int bunker_y;
 static unsigned long left, right;
+static unsigned long life;
+
 //0 = empty cell.
 //1 =ball.
 //2 = the bunker body. 
@@ -53,7 +55,6 @@ void start_screen ();
 void start_game();
 void draw();
 void win_screen();
-void level_screen(int level);
 void loss_screen();
 void Timer2_Init(unsigned long period);
 void disableTimer();
@@ -66,25 +67,14 @@ void Bomb_init();
 void level_init();
 void Bomb_move();
 void Bomb_change_dir(int state);
-//int Bomb_get_dir();
-//int get_score();
 void increase_score();
 int check_bomb_state(int,int);
 void delete_ball();
 void switch_state(int state);
-
-//void set_x(int x);
-//void set_y(int y);
-//void set_dir(int d);
-//void set_score(int S);
-//void setLifes(int L);
 void set_screen(int i,int j,int state);
 void set_level(int L);
-//int get_x();
-//int get_y();
-//int get_dir();
-//int get_score();
-//int get_life();
 int get_screen(int,int);
-//int get_level();
+int GetLifes();
+int GetLevel();
+int GetScore();
 
