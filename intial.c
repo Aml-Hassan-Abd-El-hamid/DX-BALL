@@ -7,16 +7,16 @@
 #include "Random.h"
 
 
-void start_screen (){
+void start_screen (){   //splash screen
    	Nokia5110_Clear();
-	Nokia5110_SetCursor(1, 1);
+	Nokia5110_SetCursor(0, 1);
 	Nokia5110_OutString(" Start Game");
-	Nokia5110_SetCursor(4, 4);
+	Nokia5110_SetCursor(1, 3);
 	Nokia5110_OutString(" DX BALL");
 	Nokia5110_SetCursor(0, 0);
 }
 
-void start_game(){
+void start_game(){  //initialize the place and the state of the bunker 
    int i;
    Bomb_init();
    bunker_y=10;
@@ -25,7 +25,7 @@ void start_game(){
 		set_screen(bunker_y, i, 2);
 }
 
-void draw(){
+void draw(){  //draw the grid of cells(balls), bunker, and bomb
     int i, j;
     Nokia5110_ClearBuffer();
 	Nokia5110_Clear();
@@ -42,32 +42,41 @@ void draw(){
 	Nokia5110_DisplayBuffer(); 
 }
 
-void win_screen(){
-    Nokia5110_Clear();
-	Nokia5110_SetCursor(1, 1);
-	Nokia5110_OutString("You Won");
-	Nokia5110_SetCursor(4, 4);
+void win_screen(){    // If the player wins the 3 levels
+ Nokia5110_Clear();
+	Nokia5110_SetCursor(2, 0);
+	Nokia5110_OutString(" You Won");
+	Nokia5110_SetCursor(2, 1);
 	Nokia5110_OutString("The Game");
+	Nokia5110_SetCursor(2, 3);
+	Nokia5110_OutString("  score");
+	Nokia5110_SetCursor(2, 4);
+	Nokia5110_OutUDec(score);
 	Nokia5110_SetCursor(0, 0);
 }
 
-void level_screen(int level){
+void level_screen(int level){   //print level screen and add one more row of cells each time the level is increased
     int i,j;
 	Nokia5110_Clear();
-	Nokia5110_SetCursor(1, 2);
+	Nokia5110_SetCursor(1, 1);
 	Nokia5110_OutString("  LEVEL  ");	
-	Nokia5110_SetCursor(1, 4);
+	Nokia5110_SetCursor(1, 2);
 	Nokia5110_OutUDec(level);
+	Nokia5110_SetCursor(1, 3);
+	Nokia5110_OutString("  score ");
+	Nokia5110_SetCursor(1, 4);
+	Nokia5110_OutUDec(score);
 	Nokia5110_SetCursor(0, 0);
 	set_level(level);
     start_game();
- 	for(i = 0; i < 3 + level; i++)
+ 	for(i = 0; i < 3 + GetLevel(); i++)
 		for(j = 0; j < GRID_WIDTH ; j++){
 			set_screen(i, j, 1);	
 		}
 		Delay100ms(30);
 }
-void loss_screen(){
+
+void loss_screen(){   //Game Over
 	Nokia5110_Clear();
 	Nokia5110_SetCursor(1, 1);
 	Nokia5110_OutString("GAME OVER");
@@ -78,7 +87,6 @@ void loss_screen(){
 	Nokia5110_SetCursor(0, 0);
 
 }
-
 
 
 void Timer2_Init(unsigned long period){ 
@@ -112,10 +120,10 @@ void Timer2A_Handler(void){
 	TIMER2_ICR_R = 0x00000001;   // acknowledge timer2A timeout
   	TimerCount++; 
  	Bomb_move();  
-  	if(lifes>0){ // check if the player still have lifes to continue the game
-		if(lifes!= life){
+  	if(GetLifes()>0){ // check if the player still have lifes to continue the game
+		  if(GetLifes()!= life){
 			start_game(); 
-			life = lifes; // update the value of life
+			life = GetLifes(); // update the value of life
 			Delay100ms(20);
     			}
 	//read both switches, the right and the left.
@@ -173,14 +181,14 @@ void PortF_Init(void){
   GPIO_PORTF_DEN_R = 0x1F;          // 7) enable digital pins PF4-PF0        
 }
 
-void Bomb_init(){
+void Bomb_init(){  //initalize the place of the bomb
     direction = 1;
 	x = 10;
 	y = 9;
 }
-void level_init(){
+void level_init(){ //initalize the level
     score = 0;
-	level = 1;
+    level = 1;
     life=1;
 }
 
@@ -248,13 +256,12 @@ void Bomb_change_dir(int state){
 	}
 	
 	if(state == 2) direction = rand()%3;      // move the ball up (at state =2 the ball on the bunker need to change its direction to up *d= 0/1/2*)
-	if(state == 3) //ball hits any position on screen{
+	if(state == 3){ //ball hits any position on screen{
 	         if(direction > 2)
 			direction = rand()%3 + 3; // move the ball down.(d=3/4/5)
 		 else direction = rand()%3;       // move the ball up.(d=0/1/2)
 	}
 	
-	}
 	if(state == 4) direction = rand()%3 + 3;  // move the ball down.(at state =4 the ball on the top of screen need to change its direction to down *d= 3/4/5*) 
 	
 }
@@ -289,22 +296,35 @@ int check_bomb_state(int y,int x){
 	// if non of the prev cases happened.
 	return -1;
 }
-void delete_ball(){
-    if( check_bomb_state(x-1, y) == 1 ){
+
+
+
+void switch_state(int state){  
+    if (state==-1) lifes--;  //if the state is 0 decrement the lifes 
+    else{
+        Bomb_change_dir(state); //else change the direction of the bomb and delete the cell
+        delete_ball();
+    }
+}
+
+
+
+void delete_ball(){ //delete the cells after the bomb hit them 
+    if( check_bomb_state(y, x-1) == 1 ){
 		state_screen[y][x-1] = 0;
 		 increase_score();
 	}	
-	if( check_bomb_state(x+1,y) == 1){
+	if( check_bomb_state(y,x+1) == 1){
 		state_screen[y][x+1]=0;
 		increase_score();
 	}
 	
-	if( check_bomb_state(x,y+1) == 1){
+	if( check_bomb_state(y+1,x) == 1){
 		state_screen[y+1][x] = 0;
 		increase_score();
 	}
 	
-	if( check_bomb_state(x,y-1) == 1){
+	if( check_bomb_state(y-1,x) == 1){
 		state_screen[y-1][x]=0;
 		increase_score();}		
 }
@@ -315,3 +335,8 @@ void set_screen(int i,int j,int state){
 int get_screen(int i,int j){return state_screen[i][j]; }
 
 void set_level(int levelVal) {level = levelVal;}
+int GetLevel()                        { return level; }
+
+int GetLifes()                        { return lifes; } 
+
+int GetScore()				                { return score; }
